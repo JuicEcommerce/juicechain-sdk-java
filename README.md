@@ -1,4 +1,4 @@
-# JuicEchain Node SDK
+# JuicEchain Java SDK
 
 **JuicEchain** The management of digital assets will be an essential part of new business models and close connected to 
 their success. Our JuicEchain solution is the tool to enable and guarantee exactly that. It’s the easiest available 
