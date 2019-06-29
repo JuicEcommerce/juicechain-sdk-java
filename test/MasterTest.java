@@ -22,7 +22,7 @@ public class MasterTest {
     private Node demo;
     private Wallet wallet;
     private Asset masterAsset;
-    private String signature;
+    private String authentication;
     private Wallet wallet2;
     private String masterName;
 
@@ -42,16 +42,16 @@ public class MasterTest {
         Assert.assertEquals("demo", wallet.node);
     }
 
-    // Create signature (required for next calls)
+    // Create authentication (required for next calls)
     @Test(dependsOnMethods={"create_wallet"})
-    public void generate_signature(){
-        signature = wallet.getAuthorization("");
+    public void generate_authentication(){
+        authentication = wallet.getAuthentication("");
 
-        Assert.assertNotNull(signature);
+        Assert.assertNotNull(authentication);
     }
 
     // Create Master asset (with media)
-    @Test(dependsOnMethods={"generate_signature"})
+    @Test(dependsOnMethods={"generate_authentication"})
     public void create_master_asset() throws NotAuthorizedException, IOException, IssueException, ParseException {
         masterName = getRandomAssetName() + "#";
 
@@ -69,7 +69,7 @@ public class MasterTest {
         params.inception = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-05-05");
         params.experiation = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-06-05");
 
-        Asset nft = demo.issueNFT(masterName + "1", wallet2.address, "", params, 1, signature);
+        Asset nft = demo.issueNFT(masterName + "1", wallet2.address, "", params, 1, authentication);
         Assert.assertEquals(nft.name, masterName + "1");
     }
 

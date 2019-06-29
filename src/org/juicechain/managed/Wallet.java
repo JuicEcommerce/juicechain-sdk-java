@@ -93,10 +93,10 @@ public class Wallet{
         body.put("amount", quantity);
         body.put("payload", payload);
 
-        String signature = this.getAuthorization("");
+        String authentication = this.getAuthentication("");
 
         Response<JSONObject> response = (Response<JSONObject>) _node.request()
-                .post("wallet/transfer/" + receiverAddress, body.toJSONString(), signature);
+                .post("wallet/transfer/" + receiverAddress, body.toJSONString(), authentication);
 
         if (response.success)
             return true;
@@ -133,13 +133,13 @@ public class Wallet{
     }
 
     /**
-     * Generate BitCoin signed Message as wallet authorization
+     * Generate BitCoin signed Message as wallet authentication
      *
      * @param asset Name of Asset
      *
      * @return Base64 Encoded JSON with BitCoin Signature
      */
-    public String getAuthorization(String asset){
+    public String getAuthentication(String asset){
         String deviceId = "";
         DumpedPrivateKey dpk = DumpedPrivateKey.fromBase58(null, privateKey);
         ECKey key = dpk.getKey();

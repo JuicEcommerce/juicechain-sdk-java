@@ -100,7 +100,7 @@ public class Node {
         }
     }
 
-    public Asset issueNFT(String name, String receiver, String content, AssetParams params, int amount, String signature)
+    public Asset issueNFT(String name, String receiver, String content, AssetParams params, int amount, String authentication)
             throws NotAuthorizedException, IssueException, IOException, ParseException {
 
         JSONObject issueRequest = new JSONObject();
@@ -123,7 +123,7 @@ public class Node {
 
         issueRequest.put("params", _params);
 
-        Response<JSONObject> response = (Response<JSONObject>) this.requestHelper.post("nft", issueRequest.toJSONString(), signature);
+        Response<JSONObject> response = (Response<JSONObject>) this.requestHelper.post("nft", issueRequest.toJSONString(), authentication);
 
         if (response.success){
             Asset asset = new Asset(this);

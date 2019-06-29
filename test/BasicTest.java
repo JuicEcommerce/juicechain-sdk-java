@@ -20,7 +20,7 @@ public class BasicTest {
     private Node demo;
     private Wallet wallet;
     private Wallet wallet2;
-    private String signature;
+    private String authentication;
     private Asset asset;
     private String assetName;
 
@@ -38,16 +38,16 @@ public class BasicTest {
         Assert.assertEquals("demo", wallet.node);
     }
 
-    // Create signature (required for next calls)
+    // Create authentication (required for next calls)
     @Test(dependsOnMethods={"create_wallet"})
-    public void generate_signature(){
-        signature = wallet.getAuthorization("");
+    public void generate_authentication(){
+        authentication = wallet.getAuthentication("");
 
-        Assert.assertNotNull(signature);
+        Assert.assertNotNull(authentication);
     }
 
     // Issue new Asset
-    @Test(dependsOnMethods={"generate_signature"})
+    @Test(dependsOnMethods={"generate_authentication"})
     public void create_asset() throws NotAuthorizedException, IOException, IssueException, ParseException {
         assetName = getRandomAssetName();
         asset = demo.issue(assetName, "Mein Test Asset", AssetType.admission,
@@ -56,6 +56,7 @@ public class BasicTest {
         Assert.assertNotNull(asset);
         Assert.assertEquals(asset.issuer, wallet.address);
     }
+
 
     /*
     // Verify Balance of issuer

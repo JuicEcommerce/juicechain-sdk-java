@@ -37,7 +37,7 @@ public class RequestHelper {
         return new Response<T> (this.executeRequest(createGetRequest(url, token, "")));
     }
 
-    public <T extends JSONAware> Response post(String path, String body, String signature) throws NotAuthorizedException, IOException {
+    public <T extends JSONAware> Response post(String path, String body, String authentication) throws NotAuthorizedException, IOException {
         String token = this.requestToken();
 
         if (token == null)
@@ -48,10 +48,10 @@ public class RequestHelper {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody JSONBody = RequestBody.create(JSON, body);
 
-        return new Response<T> (this.executeRequest(createPostRequest(url, JSONBody, token, signature)));
+        return new Response<T> (this.executeRequest(createPostRequest(url, JSONBody, token, authentication)));
     }
 
-    public <T extends JSONAware> Response put(String path, String body, String signature) throws NotAuthorizedException, IOException {
+    public <T extends JSONAware> Response put(String path, String body, String authentication) throws NotAuthorizedException, IOException {
         String token = this.requestToken();
 
         if (token == null)
@@ -62,7 +62,7 @@ public class RequestHelper {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody JSONBody = RequestBody.create(JSON, body);
 
-        return new Response<T> (this.executeRequest(createPutRequest(url, JSONBody, token, signature)));
+        return new Response<T> (this.executeRequest(createPutRequest(url, JSONBody, token, authentication)));
     }
 
     public <T extends JSONAware> Response upload(String path, String asset, File file) throws NotAuthorizedException, IOException {
@@ -114,29 +114,29 @@ public class RequestHelper {
                 .build();
     }
 
-    private static Request createPutRequest(String url, RequestBody body, String authorization, String signature){
+    private static Request createPutRequest(String url, RequestBody body, String authorization, String authentication){
         return new Request.Builder()
                 .url(url)
                 .addHeader("authorization", authorization)
-                .addHeader("signature", signature)
+                .addHeader("authentication", authentication)
                 .put(body)
                 .build();
     }
 
-    private static Request createPostRequest(String url, RequestBody body, String authorization, String signature){
+    private static Request createPostRequest(String url, RequestBody body, String authorization, String authentication){
         return new Request.Builder()
                 .url(url)
                 .addHeader("authorization", authorization)
-                .addHeader("signature", signature)
+                .addHeader("authentication", authentication)
                 .post(body)
                 .build();
     }
 
-    private static Request createGetRequest(String url, String authorization, String signature){
+    private static Request createGetRequest(String url, String authorization, String authentication){
         return new Request.Builder()
                 .url(url)
                 .addHeader("authorization", authorization)
-                .addHeader("signature", signature)
+                .addHeader("authentication", authentication)
                 .get()
                 .build();
     }
