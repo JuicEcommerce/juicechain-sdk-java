@@ -65,7 +65,7 @@ public class RequestHelper {
         return new Response<T> (this.executeRequest(createPutRequest(url, JSONBody, token, authentication)));
     }
 
-    public <T extends JSONAware> Response upload(String path, String asset, File file) throws NotAuthorizedException, IOException {
+    public <T extends JSONAware> Response upload(String path, String target, String asset, File file) throws NotAuthorizedException, IOException {
         String token = this.requestToken();
 
         if (token == null)
@@ -75,6 +75,8 @@ public class RequestHelper {
 
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("name", asset)
+                .addFormDataPart("style", "")
+                .addFormDataPart("target", target)
                 .addFormDataPart("buffer", file.getName(), okhttp3.RequestBody.create( okhttp3.MediaType.parse("image/png"), file) )
                 .build();
 

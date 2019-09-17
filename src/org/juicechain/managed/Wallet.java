@@ -153,6 +153,7 @@ public class Wallet{
                 ",\"asset\":\"" + asset + "\"" +
                 ",\"timestamp\":\"" + dateFormat.format(new Date()) + "\"}";
 
+
         String signatureBase64 = key.signMessage(message);
         message = message.substring(0, message.length() - 1);
         message += ", \"signature\" : \" " + signatureBase64 + " \" } ";

@@ -1,3 +1,7 @@
+import org.bitcoinj.core.DumpedPrivateKey;
+import org.bitcoinj.core.ECKey;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.juicechain.JuicEchain;
 import org.juicechain.exceptions.IssueException;
 import org.juicechain.exceptions.NotAuthorizedException;
@@ -11,9 +15,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class BasicTest {
 
@@ -26,7 +34,7 @@ public class BasicTest {
 
     @Test
     public void connect_to_node(){
-        demo = JuicEchain.getNode("demo", "", "");
+        demo = JuicEchain.getNode("demo", "none", "");
         Assert.assertNotNull(this.demo);
     }
 
@@ -82,10 +90,38 @@ public class BasicTest {
     // Attach media (image) (for mobile wallet) to the asset
     @Test(dependsOnMethods={"create_asset"})
     public void set_mobile_media() throws NotAuthorizedException, IOException {
-        boolean result = asset.setMedia(assetName, "test/examples/media.png");
+        boolean result = asset.setTicket(assetName, "test/examples/media.png");
 
         Assert.assertEquals(result, true);
     }
+
+
+    // Set pattern
+    @Test(dependsOnMethods={"create_asset"})
+    public void set_pattern() throws NotAuthorizedException, IOException, org.json.simple.parser.ParseException {
+        org.json.simple.parser.JSONParser jsonParser = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParser.parse("{\n" +
+                "    \"type\": \"string\",\n" +
+                "    \"label\": { \"de_DE\": \"Seat\"},\n" +
+                "    \"name\": \"seat\"\n" +
+                "}");
+
+        boolean result = asset.setPattern(obj);
+
+        Assert.assertEquals(result, true);
+    }
+
+    // Set content
+    @Test(dependsOnMethods={"create_asset"})
+    public void set_content() throws NotAuthorizedException, IOException, org.json.simple.parser.ParseException {
+        org.json.simple.parser.JSONParser jsonParser = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParser.parse("{ \"seat\": 24 }");
+
+        boolean result = asset.setContent(obj);
+
+        Assert.assertEquals(result, true);
+    }
+
 
     // Transfer asset to target wallet
     @Test(dependsOnMethods={"create_asset"})

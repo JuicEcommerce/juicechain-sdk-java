@@ -62,6 +62,18 @@ public class Asset {
         return response.success;
     }
 
+    public boolean setPattern(JSONObject pattern) throws NotAuthorizedException, IOException {
+        Response<JSONObject> response = (Response<JSONObject>) _node.request().put("asset/pattern", pattern.toJSONString(), "");
+
+        return response.success;
+    }
+
+    public boolean setContent(JSONObject content) throws NotAuthorizedException, IOException {
+        Response<JSONObject> response = (Response<JSONObject>) _node.request().put("asset/pattern", content.toJSONString(), "");
+
+        return response.success;
+    }
+
     /**
      * Update assets (media) card
      *
@@ -75,24 +87,24 @@ public class Asset {
 
         File file = new File(filePath);
 
-        Response<JSONObject> response = (Response<JSONObject>) _node.request().upload("asset/card", asset, file);
+        Response<JSONObject> response = (Response<JSONObject>) _node.request().upload("asset/media", "card", asset, file);
 
         return response.success;
     }
 
     /**
-     * Update assets (media) Media (cover)
+     * Update assets (media) Ticket (cover)
      * @param asset
      * @param filePath
      * @return
      * @throws NotAuthorizedException
      * @throws IOException
      */
-    public boolean setMedia(String asset, String filePath) throws NotAuthorizedException, IOException {
+    public boolean setTicket(String asset, String filePath) throws NotAuthorizedException, IOException {
 
         File file = new File(filePath);
 
-        Response<JSONObject> response = (Response<JSONObject>) _node.request().upload("asset/media", asset, file);
+        Response<JSONObject> response = (Response<JSONObject>) _node.request().upload("asset/media", "ticket", asset, file);
 
         return response.success;
     }
@@ -111,7 +123,7 @@ public class Asset {
 
         this.description = obj.get("description") != null ? obj.get("description").toString() : "";
 
-        this.mediaUrl = ((JSONObject)obj.get("media")).get("url").toString();
+        this.mediaUrl = ((JSONObject)obj.get("media")).get("ticket").toString();
         this.card = ((JSONObject)obj.get("media")).get("card").toString();
         this.mediaType = ((JSONObject)obj.get("media")).get("type").toString();
 
